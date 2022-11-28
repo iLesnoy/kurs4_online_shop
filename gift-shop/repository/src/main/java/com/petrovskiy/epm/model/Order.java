@@ -34,15 +34,15 @@ public class Order {
     private User user;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
-    @JoinTable(name="gift_certificate_has_orders"
+    @JoinTable(name="product_has_orders"
             ,joinColumns = @JoinColumn(name = "orders_id", referencedColumnName = "id")
-            ,inverseJoinColumns = @JoinColumn(name = "gift_certificate_id",referencedColumnName = "id"))
-    private List<GiftCertificate> certificateList = new ArrayList<>();
+            ,inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"))
+    private List<Product> productList = new ArrayList<>();
 
 
     @PrePersist
     private void prePersist(){
         orderDate = LocalDateTime.now();
-        cost =  certificateList.stream().map(GiftCertificate::getPrice).reduce(BigDecimal.ONE,BigDecimal::add);
+        cost =  productList.stream().map(Product::getPrice).reduce(BigDecimal.ONE,BigDecimal::add);
     }
 }

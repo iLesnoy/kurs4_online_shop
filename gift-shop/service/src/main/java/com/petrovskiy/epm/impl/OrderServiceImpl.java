@@ -7,7 +7,7 @@ import com.petrovskiy.epm.dto.RequestOrderDto;
 import com.petrovskiy.epm.dto.ResponseOrderDto;
 import com.petrovskiy.epm.exception.SystemException;
 import com.petrovskiy.epm.mapper.OrderMapper;
-import com.petrovskiy.epm.model.GiftCertificate;
+import com.petrovskiy.epm.model.Product;
 import com.petrovskiy.epm.model.Order;
 import com.petrovskiy.epm.model.User;
 import com.petrovskiy.epm.validator.EntityValidator;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.petrovskiy.epm.exception.ExceptionCode.*;
@@ -29,17 +28,17 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final EntityValidator validator;
     private final UserServiceImpl userService;
-    private final GiftCertificateServiceImpl giftCertificateService;
+    private final ProductServiceImpl productService;
     private final OrderMapper orderMapper;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, EntityValidator validator, UserServiceImpl userService,
-                            GiftCertificateServiceImpl giftCertificateService,
+                            ProductServiceImpl productService,
                             OrderMapper orderMapper) {
         this.orderRepository = orderRepository;
         this.validator = validator;
         this.userService = userService;
-        this.giftCertificateService = giftCertificateService;
+        this.productService = productService;
         this.orderMapper = orderMapper;
     }
 
@@ -52,11 +51,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public ResponseOrderDto create(RequestOrderDto orderDto) {
         User user = userService.findUserById(orderDto.getUserId());
-        List<GiftCertificate> giftCertificates = orderDto.getCertificateIdList()
-                .stream().map(giftCertificateService::findCertificateById).collect(Collectors.toList());
+        List<Product> products = orderDto.getProductIdList()
+                .stream().map(productService::findProductById).collect(Collectors.toList());
         Order order = Order.builder()
                 .user(user)
-                .certificateList(giftCertificates).build();
+                .productList(products).build();
         return orderMapper.orderToDto(orderRepository.save(order));
     }
 

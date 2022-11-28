@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByEmail(String email);
+    Optional<User> findByFirstName(String name);
     Optional<User> findFirstByRole_Id(Long roleId); //можно проверит есть ли роль у какого-нить пользователя
 }

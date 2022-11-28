@@ -2,11 +2,11 @@ package com.petrovskiy.epm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
-@EnableEurekaClient
 @SpringBootApplication
 public class WebApplication {
 
@@ -24,5 +24,15 @@ public class WebApplication {
         messages.addBasenames(ERROR_MESSAGES_FILE);
         messages.setDefaultEncoding(ENCODING);
         return messages;
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource
+                = new ReloadableResourceBundleMessageSource();
+
+        messageSource.setBasename("classpath:messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
     }
 }

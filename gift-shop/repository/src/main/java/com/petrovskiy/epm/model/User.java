@@ -18,7 +18,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User{
 
 
     @Id
@@ -39,19 +39,13 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z]|[A-Z]).{8,20}$")
+    /*@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z]|[A-Z]).{8,20}$")*/
     private String password;
-    /*private boolean enabled;
-    private boolean tokenExpired;*/
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-    private Set<Role> role = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "roles_id")
+    private Role role;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @ToString.Exclude

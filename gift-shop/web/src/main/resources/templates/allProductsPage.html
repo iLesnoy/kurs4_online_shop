@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{fragments/layout.html}" >
+
+<head>
+    <h1>ORDERS</h1>
+</head>
+
+<body>
+
+<div class="">
+    <td th:text="${product}"/>
+
+<!--    <table border="1">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th th:text="ID" />-->
+<!--            <th th:text="name" />-->
+<!--            <th th:text="price" />-->
+<!--            <th th:text="createDate" />-->
+<!--            <th th:text="lastUpdateDate" />-->
+<!--            <th th:text="description" />-->
+<!--            <th th:text="categoryDtoList" />-->
+<!--            <th th:text="duration" />-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:each="productDto : ${page.content}">-->
+
+<!--            <td th:text="${productDto.id}"/>-->
+<!--            <td th:text="${productDto.name}"/>-->
+<!--            <td th:text="${productDto.price}"/>-->
+<!--            <td th:text="${productDto.createDate}"/>-->
+<!--            <td th:text="${productDto.lastUpdateDate}"/>-->
+<!--            <td th:text="${productDto.description}"/>-->
+<!--            <td th:text="${productDto.categoryDtoList}"/>-->
+<!--            <td th:text="${productDto.duration}"/>-->
+
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    <div th:if="${page.totalPages > 0}" class="pagination"-->
+<!--         th:each="pageNumber : ${pageNumbers}">-->
+<!--        <a th:href="@{/api/products(size=${page.size}, page=${page.number + 1})}"-->
+<!--           th:text=${pageNumber}-->
+<!--           th:class="${pageNumber==page.number + 1} ? active"></a>-->
+<!--    </div>-->
+
+</div>
+
+
+</body>
+</html>

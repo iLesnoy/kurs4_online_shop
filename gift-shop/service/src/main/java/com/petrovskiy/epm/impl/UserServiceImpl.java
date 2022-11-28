@@ -17,6 +17,7 @@ import com.petrovskiy.epm.validator.EntityValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,34 +35,35 @@ public class UserServiceImpl implements UserService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final EntityValidator validator;
-    /*private PasswordEncoder passwordEncoder;*/
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
                            OrderRepository orderRepository, OrderMapper orderMapper,
-                           EntityValidator validator, UserMapper userMapper) {
+                           EntityValidator validator, UserMapper userMapper,PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.validator = validator;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     @Override
     public UserDto create(UserDto userDto) {
-        userRepository.findByEmail(userDto.getEmail()).ifPresentOrElse(a -> {
+        userRepository.findByEmail(userDto.getEmail()).ifPresentOrElse(a -> { //error while dupl name => TODO
                     throw new SystemException(DUPLICATE_NAME);
-                }, () -> setRoleToNewUser(userDto)
+                }, () -> setDataToNewUser(userDto)
         );
         User user = userMapper.dtoToUser(userDto);
         return userMapper.userToDto(userRepository.save(user));
     }
 
-    private void setRoleToNewUser(UserDto user) {
-        roleRepository.findByName("USER").ifPresent(a ->
-                user.setRole(Set.of(a)));
+    private void setDataToNewUser(UserDto user) {
+        roleRepository.findByName("USER").ifPresent(user::setRole);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 
     @Override
@@ -102,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findByName(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new SystemException(NON_EXISTENT_ENTITY));
+        User user = userRepository.findByFirstName(email).orElseThrow(() -> new SystemException(NON_EXISTENT_ENTITY));
         return userMapper.userToDto(user);
     }
 
@@ -125,11 +127,11 @@ public class UserServiceImpl implements UserService {
         String lastName = userDto.getLastName();
         String email = userDto.getEmail();
         String password = userDto.getPassword();
-        Set<Role> roles = userDto.getRole();
+        Role role = userDto.getRole();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(password);
-        user.setRole(roles);
+        user.setRole(role);
     }
 }

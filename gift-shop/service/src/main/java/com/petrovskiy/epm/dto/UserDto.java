@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
@@ -17,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonPropertyOrder({"id", "name", "role"})
+@JsonPropertyOrder({"id", "firstName", "lastName","email","password"})
 public class UserDto extends RepresentationModel<UserDto> {
 
     @JsonProperty("id")
@@ -36,5 +35,5 @@ public class UserDto extends RepresentationModel<UserDto> {
     private String password;
 
     @JsonProperty("role")
-    private Set<Role> role;
+    private Role role;
 }

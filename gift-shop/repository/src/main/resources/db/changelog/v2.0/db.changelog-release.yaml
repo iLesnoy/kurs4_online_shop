@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1668344231022-3
+      author: Privet
+      changes:
+        - updateTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: users_pkey
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: email
+                  type: VARCHAR(65)
+              - column:
+                  name: first_name
+                  type: VARCHAR(65)
+              - column:
+                  name: last_name
+                  type: VARCHAR(65)
+              - column:
+                  name: password
+                  type: VARCHAR(60)
+            tableName: users

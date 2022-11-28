@@ -3,14 +3,17 @@ package com.petrovskiy.epm.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -42,9 +45,15 @@ public class Role {
     private Set<Privilege> privilege = new HashSet<>();
 
     @JsonBackReference
-    @ManyToMany(mappedBy = "role",fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
     @ToString.Exclude
-    private Set<User> users;
+    private List<User> userList;
+
+    public Set<SimpleGrantedAuthority> getAuthorities() {
+        return privilege.stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.getPrivilege()))
+                .collect(Collectors.toSet());
+    }
 
     @Override
     public boolean equals(Object o) {

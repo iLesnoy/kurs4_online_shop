@@ -8,9 +8,12 @@ import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
@@ -31,7 +34,6 @@ public class ControllerAdvisor {
     private static final String ERROR_MESSAGE = "errorMessage";
     private static final String ERROR_CODE = "errorCode";
     private final ResourceBundleMessageSource messages;
-    private MismatchedCharException messageSource;
 
     @Autowired
     public ControllerAdvisor(ResourceBundleMessageSource messages) {
@@ -93,10 +95,18 @@ public class ControllerAdvisor {
         return new ResponseEntity<>(createResponse(FORBIDDEN_ACCESS, locale), getHttpStatusByCode(FORBIDDEN_ACCESS));
     }
 
-    /*@ExceptionHandler(BadCredentialsException.class)
+    @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleBadCredentialsException(Locale locale) {
         return new ResponseEntity<>(createResponse(INVALID_CREDENTIALS, locale), getHttpStatusByCode(INVALID_CREDENTIALS));
-    }*/
+    }
+
+    @ExceptionHandler(Throwable.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String exception(final Throwable throwable, final Model model) {
+        String errorMessage = (throwable != null ? throwable.getMessage() : "Unknown error");
+        model.addAttribute("errorMessage", errorMessage);
+        return "error";
+    }
 
     private Map<String, Object> createResponse(int errorCode, Locale locale) {
         Map<String, Object> response = new LinkedHashMap<>();

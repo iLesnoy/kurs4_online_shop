@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Spring Security Demo</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+<style>
+    .navbar {
+        background-color: green;
+    }
+</style>
+
+<body>
+
+<!-- create navigation bar ( header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">
+                Registration and
+                Login</a>
+        </div>
+    </div>
+</nav>
+
+<br><br><br><br><br><br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <h1>User Login Page</h1>
+            *@thymesVar id="loginForm" type="com.petrovskiy.epm.dto"
+            <form th:action="@{/api/auth/login}" th:object="${requestDto}" method="post">
+
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" th:field="*{name}" name="name"  placeholder="name" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="text" th:field="*{password}" name="password" placeholder="password" />
+                </div>
+
+                <input type="submit" value="Submit"/>
+            </form>
+
+            <div class="form-group">
+                    <span>New user? <a href="/" th:href="@{/api/auth/registration}">
+                Register
+                  here</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
