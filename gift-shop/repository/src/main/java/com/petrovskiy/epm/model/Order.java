@@ -34,7 +34,7 @@ public class Order {
     private User user;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
-    @JoinTable(name="product_has_orders"
+    @JoinTable(name="order_has_products"
             ,joinColumns = @JoinColumn(name = "orders_id", referencedColumnName = "id")
             ,inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"))
     private List<Product> productList = new ArrayList<>();

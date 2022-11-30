@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1669819669895-2
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_categories
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+            tableName: categories
+  - changeSet:
+      id: 1669819669895-11
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: id
+            constraintName: uc_categories_id
+            tableName: categories
+  - changeSet:
+      id: 1669819669895-12
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: uc_categories_name
+            tableName: categories
+

@@ -1,11 +1,10 @@
 package com.petrovskiy.epm.security;
 
 import com.petrovskiy.epm.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
+@Slf4j
 public class SecurityUserDetailsBuilder {
     private static final boolean ACTIVE = true;
 
@@ -13,7 +12,7 @@ public class SecurityUserDetailsBuilder {
     }
 
     public static UserDetails create(User user) {
-        return new JwtUser(
+        return new AuthUser(
                 user.getId(),
                 user.getFirstName(),
                 user.getPassword(),

@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1669819669895-29
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: privelege
+            tableName: privileges

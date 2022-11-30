@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1669819669895-6
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: orders_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: product_id
+                  type: BIGINT
+            tableName: order_has_products
+  - changeSet:
+      id: 1669819669895-16
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: orders_id
+            constraintName: uc_product_has_orders_orders
+            tableName: order_has_products
+  - changeSet:
+      id: 1669819669895-25
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: orders_id
+            baseTableName: order_has_products
+            constraintName: fk_prohasord_on_order
+            referencedColumnNames: id
+            referencedTableName: orders
+  - changeSet:
+      id: 1669819669895-26
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: order_has_products
+            constraintName: fk_prohasord_on_product
+            referencedColumnNames: id
+            referencedTableName: products

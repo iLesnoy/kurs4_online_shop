@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1669819669895-5
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_product_has_category
+                  name: category_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_product_has_category
+                  name: product_id
+                  type: BIGINT
+            tableName: product_has_category
+  - changeSet:
+      id: 1669819669895-15
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: product_id
+            constraintName: uc_product_has_category_product
+            tableName: product_has_category
+  - changeSet:
+      id: 1669819669895-23
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: category_id
+            baseTableName: product_has_category
+            constraintName: fk_prohascat_on_category
+            referencedColumnNames: id
+            referencedTableName: categories
+  - changeSet:
+      id: 1669819669895-24
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: product_has_category
+            constraintName: fk_prohascat_on_product
+            referencedColumnNames: id
+            referencedTableName: products
+

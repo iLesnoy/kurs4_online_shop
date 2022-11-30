@@ -3,9 +3,11 @@ package com.petrovskiy.epm.constants;
 public class SqlQuery{
     public static final String FIND_PRODUCTS_BY_SEARCH_PART =
             "SELECT c FROM Product c WHERE c.name LIKE %:searchPart% OR c.description LIKE %:searchPart%";
-    public static final String FIND_PRODUCTS_BY_CATEGORY_NAMES_AND_SEARCH_PART =
-            "SELECT c FROM Product c JOIN c.categoryList tl WHERE tl.name IN :categoryNameList" +
-                    " AND (c.name LIKE %:searchPart% OR c.description LIKE %:searchPart%) GROUP BY c HAVING COUNT(tl)>=:categoryNumber";
+    public static final String FIND_PRODUCTS_BY_CATEGORY_NAMES_AND_SEARCH_PART_ANTON =
+            "SELECT p FROM Product p " +
+                    "JOIN p.categoryList cat " +
+                    "WHERE cat.name IN :categoryNameList " +
+                    "OR (p.name LIKE %:searchPart% OR p.description LIKE %:searchPart%)";
     public static final String FIND_MOST_POPULAR_PRODUCT =
             """
             SELECT t.id, t.name FROM category as t

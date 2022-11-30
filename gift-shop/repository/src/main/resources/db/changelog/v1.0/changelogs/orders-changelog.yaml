@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1669819669895-3
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_orders
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: order_date
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: order_cost
+                  type: DECIMAL
+              - column:
+                  name: users_id
+                  type: BIGINT
+            tableName: orders
+  - changeSet:
+      id: 1669819669895-13
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: id
+            constraintName: uc_orders_id
+            tableName: orders
+  - changeSet:
+      id: 1669819669895-21
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: users_id
+            baseTableName: orders
+            constraintName: FK_ORDERS_ON_USERS
+            referencedColumnNames: id
+            referencedTableName: users

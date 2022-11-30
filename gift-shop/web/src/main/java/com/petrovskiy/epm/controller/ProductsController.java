@@ -5,6 +5,8 @@ import com.petrovskiy.epm.dto.AuthenticationRequestDto;
 import com.petrovskiy.epm.dto.ProductAttributeDto;
 import com.petrovskiy.epm.dto.ProductDto;
 import com.petrovskiy.epm.model.Order;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +23,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/api/products")
+@RequestMapping("/products")
+@Slf4j
 public class ProductsController {
 
     private final ProductService productService;
@@ -56,7 +59,7 @@ public class ProductsController {
     public String findById(@PathVariable Long id, Model model) {
         ProductDto productDto = productService.findById(id);
         model.addAttribute("product", productDto);
-        return "index";
+        return "products";
     }
 
     @GetMapping
@@ -64,18 +67,16 @@ public class ProductsController {
                                    Model model) {
         Page<ProductDto> page = productService.searchByParameters(attribute, pageable);
 
-
-        int totalPages = page.getTotalPages()-1;
+        int totalPages = page.getTotalPages() - 1;
         if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+            List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages)
                     .boxed()
                     .collect(Collectors.toList());
-
-            model.addAttribute("page", page);
             model.addAttribute("pageNumbers", pageNumbers);
-            model.addAttribute("productList", page.getContent());
         }
-        return "index";
+            model.addAttribute("productList", page.getContent());
+            model.addAttribute("page", page);
+        return "products";
     }
 
 

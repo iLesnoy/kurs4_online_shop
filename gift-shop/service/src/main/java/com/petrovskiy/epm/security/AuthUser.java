@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class JwtUser implements UserDetails {
+public class AuthUser implements UserDetails {
     private  Long userId;
     private  String username;
     private  String password;
