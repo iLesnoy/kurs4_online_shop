@@ -36,7 +36,7 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public String signUp(@ModelAttribute("user") UserDto userDto, HttpHeaders request) {
+    public String signUp(@ModelAttribute("user") UserDto userDto) {
         userService.create(userDto);
         return "redirect:/api/products";
     }

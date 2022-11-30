@@ -47,46 +47,33 @@
 
             <h1>Registration</h1>
 
-            <form th:action="@{/api/auth/signup}" method="post"
-                  th:object="${user}">
-                <div class="form-group">
-                    <label class="control-label" for="firstName">
-                        First Name </label>
-                    <input id="firstName" class="form-control"
-                           th:field="*{firstName}" required
-                           autofocus="autofocus" />
-                </div>
+            <form th:action="@{/api/auth/signup}" th:object="${user}" method="post">
 
                 <div class="form-group">
-                    <label class="control-label" for="lastName">
-                        Last Name </label> <input id="lastName"
-                                                  class="form-control" th:field="*{lastName}"
-                                                  required autofocus="autofocus" />
+                    <label>firstName</label>
+                    <input type="text" th:field="*{firstName}" name="firstName"  placeholder="firstName" />
+                </div>
+                <div class="form-group">
+                    <label>lastName</label>
+                    <input type="text" th:field="*{lastName}" name="lastName" placeholder="lastName" />
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" th:field="*{email}" name="email" placeholder="email" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="text" th:field="*{password}" name="password" placeholder="password" />
                 </div>
 
+                <button type="submit" class="btn btn-primary"/>
+            </form>
                 <div class="form-group">
-                    <label class="control-label" for="email"> Email
-                    </label> <input id="email" class="form-control"
-                                    th:field="*{email}" required autofocus="autofocus"
-                />
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label" for="password">
-                        Password </label> <input id="password"
-                                                 class="form-control" type="password"
-                                                 th:field="*{password}" required
-                                                 autofocus="autofocus" />
-                </div>
-
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
                         Register</button>
                     <span>Already registered? <a href="/"
                                                  th:href="@{/api/auth/login}">Login
                                 here</a></span>
                 </div>
-            </form>
         </div>
     </div>
 </div>
