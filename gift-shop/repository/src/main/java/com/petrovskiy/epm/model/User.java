@@ -39,7 +39,7 @@ public class User{
     @Column(unique = true)
     private String email;
 
-    /*@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z]|[A-Z]).{8,20}$")*/
+
     private String password;
 
 

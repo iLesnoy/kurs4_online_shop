@@ -34,16 +34,11 @@
 </nav>
 
 <br><br><br><br><br><br><br>
-<!-- Create HTML registration form -->
+
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
 
-            <!-- success message -->
-            <div th:if="${param.success}">
-                <div class="alert alert-info">You've successfully registered
-                    to our awesome app!</div>
-            </div>
 
             <h1>Registration</h1>
 
@@ -52,18 +47,29 @@
                 <div class="form-group">
                     <label>firstName</label>
                     <input type="text" th:field="*{firstName}" name="firstName"  placeholder="firstName" />
+                    <ul>
+                        <li th:each="err : ${#fields.errors('firstName')}" th:text="${err}"
+                            class="error" />
+                    </ul>
                 </div>
                 <div class="form-group">
                     <label>lastName</label>
                     <input type="text" th:field="*{lastName}" name="lastName" placeholder="lastName" />
+                    <p th:if="${#fields.hasErrors('lastName')}" th:errorclass="error"
+                       th:errors="*{lastName}" />
                 </div>
                 <div class="form-group">
                     <label>Email</label>
                     <input type="text" th:field="*{email}" name="email" placeholder="email" />
+                    <p th:if="${#fields.hasErrors('email')}"
+                       th:class="${#fields.hasErrors('email')}? error"
+                       th:errors="*{email}" />
                 </div>
                 <div class="form-group">
                     <label>Password</label>
                     <input type="text" th:field="*{password}" name="password" placeholder="password" />
+                    <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" style="color: red"
+                       th:errors="*{password}" />
                 </div>
 
                 <button type="submit" class="btn btn-primary"/>
@@ -74,6 +80,7 @@
                                                  th:href="@{/api/auth/login}">Login
                                 here</a></span>
                 </div>
+
         </div>
     </div>
 </div>

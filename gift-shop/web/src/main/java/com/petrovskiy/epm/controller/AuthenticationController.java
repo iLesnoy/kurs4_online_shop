@@ -13,10 +13,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 
 @Controller
@@ -36,7 +38,10 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public String signUp(@ModelAttribute("user") UserDto userDto) {
+    public String signUp(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return "signup";
+        }
         userService.create(userDto);
         return "redirect:/api/products";
     }
@@ -54,8 +59,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public String authenticate(@ModelAttribute("requestDto") AuthenticationRequestDto requestDto,
+    public String authenticate(@ModelAttribute("requestDto") @Valid AuthenticationRequestDto requestDto,
+                               BindingResult result,
                                HttpServletResponse response) {
+        if (result.hasErrors()) {
+            return "login";
+        }
         Object name = requestDto.getName();
         Object password = requestDto.getPassword();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(name, password));

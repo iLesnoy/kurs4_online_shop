@@ -42,13 +42,13 @@
     </table>
     <div th:if="${page.totalPages > 0}" class="pagination"
          th:each="pageNumber : ${pageNumbers}">
-        <a th:href="@{/api/products(size=${page.size}, page=${page.number})}"
+        <a th:href="@{/api/products?(size=${page.size}, page=${pageNumber})}"
            th:text=${pageNumber}
            th:class="${pageNumber==page.number + 1} ? active"></a>
     </div>
 
     <span>About company <a href="/"
-                                 th:href="@{/api/auth/about}"> About</a></span>
+                                 th:href="@{/api/products/about}"> About</a></span>
 </div>
 
 
