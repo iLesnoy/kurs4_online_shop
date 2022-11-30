@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import static com.petrovskiy.epm.exception.ExceptionCode.INVALID_CREDENTIALS;
+import static com.petrovskiy.epm.exception.ExceptionCode.NON_EXISTENT_ENTITY;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -23,8 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        User user = userRepository.findByFirstName(username).orElseThrow(() -> new SystemException(INVALID_CREDENTIALS));
+        User user = userRepository.findByEmail(username).orElseThrow(() -> new SystemException(NON_EXISTENT_ENTITY));
         return SecurityUserDetailsBuilder.create(user);
     }
 

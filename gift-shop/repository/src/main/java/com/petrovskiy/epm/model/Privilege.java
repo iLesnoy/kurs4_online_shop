@@ -35,8 +35,6 @@ public class Privilege {
     @ToString.Exclude
     private Set<Role> roles;
 
-    private String privilege;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

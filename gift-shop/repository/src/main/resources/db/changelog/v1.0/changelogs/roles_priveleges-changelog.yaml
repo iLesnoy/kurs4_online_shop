@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1669819669895-9
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_roles_privileges
+                  name: privilege_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_roles_privileges
+                  name: role_id
+                  type: BIGINT
+            tableName: roles_privileges
+  - changeSet:
+      id: 1669819669895-27
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: privilege_id
+            baseTableName: roles_privileges
+            constraintName: fk_rolpri_on_privilege
+            referencedColumnNames: id
+            referencedTableName: privileges
+  - changeSet:
+      id: 1669819669895-28
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: role_id
+            baseTableName: roles_privileges
+            constraintName: fk_rolpri_on_role
+            referencedColumnNames: id
+            referencedTableName: roles
+

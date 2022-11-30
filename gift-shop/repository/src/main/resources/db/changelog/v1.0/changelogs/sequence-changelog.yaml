@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1669819669895-1
+      author: Anton (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: hibernate_sequence
+            startValue: 1
+

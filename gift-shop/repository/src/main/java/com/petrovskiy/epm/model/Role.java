@@ -51,7 +51,7 @@ public class Role {
 
     public Set<SimpleGrantedAuthority> getAuthorities() {
         return privilege.stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getPrivilege()))
+                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
                 .collect(Collectors.toSet());
     }
 

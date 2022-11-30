@@ -13,6 +13,7 @@ import com.petrovskiy.epm.mapper.ProductMapper;
 import com.petrovskiy.epm.model.Product;
 import com.petrovskiy.epm.model.Category;
 import com.petrovskiy.epm.validator.EntityValidator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +32,7 @@ import static com.petrovskiy.epm.exception.ExceptionCode.*;
 import static org.springframework.data.domain.Sort.by;
 
 @Service
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
 
@@ -100,14 +102,14 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public Page<ProductDto> searchByParameters(ProductAttributeDto attributeDto, Pageable pageable) {
         setDefaultParamsIfAbsent(attributeDto);
+        String searchPart = attributeDto.getSearchPart().strip();
+
         Pageable sortedPageable = buildPageableSort(attributeDto.getSortingFieldList(), attributeDto.getOrderSort(), pageable);
-        Page<Product> productPage = Objects.nonNull(attributeDto.getCategoryNameList())
-                ? productRepository.findByAttributes(attributeDto.getCategoryNameList()
-                , attributeDto.getCategoryNameList().size(), attributeDto.getSearchPart(), sortedPageable)
-                : productRepository.findByAttributes(attributeDto.getSearchPart(), sortedPageable);
+        var productPage = productRepository.findByAttributes(List.of(searchPart), searchPart, sortedPageable);
         if (!validator.isPageExists(pageable, productPage.getTotalElements())) {
             throw new SystemException(NON_EXISTENT_PAGE);
         }
+        log.warn(productPage.getContent().toString());
         return new CustomPage<>(productPage.getContent(), productPage.getPageable(), productPage.getTotalElements())
                 .map(productMapper::productToDto);
     }
