@@ -1,6 +1,7 @@
 package com.petrovskiy.epm.controller;
 
 import com.petrovskiy.epm.ProductService;
+import com.petrovskiy.epm.dto.AuthenticationRequestDto;
 import com.petrovskiy.epm.dto.ProductAttributeDto;
 import com.petrovskiy.epm.dto.ProductDto;
 import com.petrovskiy.epm.model.Order;
@@ -35,6 +36,10 @@ public class ProductsController {
         return created;
     }
 
+    @GetMapping("about")
+    public String showAboutPage() {
+        return "about";
+    }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -48,7 +53,7 @@ public class ProductsController {
     public String findById(@PathVariable Long id,Model model) {
         ProductDto productDto = productService.findById(id);
         model.addAttribute("product",productDto);
-        return "allProductsPage";
+        return "index";
     }
 
     @GetMapping
@@ -59,7 +64,7 @@ public class ProductsController {
         model.addAttribute("pageNumbers", page.getNumber());
         model.addAttribute("page",page);
         model.addAttribute("productList",page.getContent());
-        return "allProductsPage";
+        return "index";
     }
 
     @DeleteMapping("/{id}")

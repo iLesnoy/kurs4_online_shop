@@ -11,16 +11,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 
 @Controller
@@ -40,52 +36,54 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto signUp(@ModelAttribute("user")  UserDto userDto, HttpHeaders request) {
-        return userService.create(userDto);
+    public String signUp(@ModelAttribute("user") UserDto userDto, HttpHeaders request) {
+        userService.create(userDto);
+        return "redirect:/api/products";
     }
 
+    @GetMapping("login")
+    public String showLoginForm(Model model) {
+        model.addAttribute("requestDto",new AuthenticationRequestDto());
+        return "login";
+    }
+
+    @GetMapping("signup")
+    public String showSignupForm(Model model) {
+        model.addAttribute("user",new UserDto());
+        return "signup";
+    }
 
     @PostMapping("/login")
-    public String authenticate(@ModelAttribute(name="requestDto") AuthenticationRequestDto requestDto,
-                               HttpServletResponse response, Model model) {
+    public String authenticate(@ModelAttribute("requestDto") AuthenticationRequestDto requestDto,
+                               HttpServletResponse response) {
         Object name = requestDto.getName();
         Object password = requestDto.getPassword();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(name, password));
 
         UserDto userDto = userService.findByName(String.valueOf(name));
         String token = jwtTokenProvider.createToken(userDto.getFirstName(), userDto.getRole().getName());
+        System.out.println(token);
         HttpHeaders responseHeaders = new HttpHeaders();
         Cookie cookie = new Cookie(CookiesAuthenticationFilter.COOKIE_NAME,token);
         cookie.setPath("/");
         response.addCookie(cookie);
         addAccessTokenCookie(responseHeaders, token);
-        return "login";
+        return "redirect:/api/products";
     }
 
     private void addAccessTokenCookie(HttpHeaders httpHeaders, String token) {
         httpHeaders.add(HttpHeaders.SET_COOKIE, token);
     }
 
-    @GetMapping("registration")
-    public String showRegistrationForm() {
-        return "registration";
-    }
 
     @RequestMapping("/login-error.html")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
-        return "login.html";
+        return "signup";
     }
 
-    @PostMapping
-    public String registerUserAccount(@ModelAttribute("user")
-                                              UserDto registrationDto) {
 
-        userService.create(registrationDto);
-        return "redirect:/registration?success";
-    }
-
-    @PostMapping("/logOut")
+    /*@PostMapping("/logOut")
     public void signOut(HttpServletRequest request){
         SecurityContextHolder.clearContext();
         Optional<Cookie> authCookie = Stream.of(Optional.
@@ -95,5 +93,5 @@ public class AuthenticationController {
                 .findFirst();
 
         authCookie.ifPresent(cookie -> cookie.setMaxAge(0));
-    }
+    }*/
 }

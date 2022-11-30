@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/users/**").hasRole("ADMIN")
                 .antMatchers("/api/roles/**").hasAuthority("read:role")
                 .anyRequest().authenticated()
                 .and()
@@ -58,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login.html")
-                .failureUrl("/login-error.html")
+                .failureUrl("/error.html")
                 .and()
                 .logout()
                 .logoutSuccessUrl("/index.html").and().exceptionHandling();

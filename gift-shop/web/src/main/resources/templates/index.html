@@ -1,54 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.
-             org/thymeleaf-extras-springsecurity3">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{fragments/layout.html}" >
 
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Spring Security Demo</title>
-
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+    <h1>ORDERS</h1>
 </head>
-<style>
-    .navbar {
-        background-color: green;
-    }
-</style>
 
 <body>
-<!-- create navigation bar ( header) -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span> <span class="icon-bar">
-                    </span>
-            </button>
-            <a class="navbar-brand" href="#" th:href="@{/}">
-                Registration and
-                Login</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li sec:authorize="isAuthenticated()">
-                    <a th:href="@{/logout}">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
 
-<br><br><br><br>
-<div class="container">
-    <div class="alert alert-success">
-        <strong>Success!</strong> Login Successful.
+<div class="">
+    <td th:text="${product}"/>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th th:text="ID" />
+            <th th:text="name" />
+            <th th:text="price" />
+            <th th:text="createDate" />
+            <th th:text="lastUpdateDate" />
+            <th th:text="description" />
+            <th th:text="categoryDtoList" />
+            <th th:text="duration" />
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="productDto : ${page.content}">
+
+            <td th:text="${productDto.id}"/>
+            <td th:text="${productDto.name}"/>
+            <td th:text="${productDto.price}"/>
+            <td th:text="${productDto.createDate}"/>
+            <td th:text="${productDto.lastUpdateDate}"/>
+            <td th:text="${productDto.description}"/>
+            <td th:text="${productDto.categoryDtoList}"/>
+            <td th:text="${productDto.duration}"/>
+
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${page.totalPages > 0}" class="pagination"
+         th:each="pageNumber : ${pageNumbers}">
+        <a th:href="@{/api/products(size=${page.size}, page=${page.number})}"
+           th:text=${pageNumber}
+           th:class="${pageNumber==page.number + 1} ? active"></a>
     </div>
+
+    <span>About company <a href="/"
+                                 th:href="@{/api/auth/about}"> About</a></span>
 </div>
+
 
 </body>
 </html>
