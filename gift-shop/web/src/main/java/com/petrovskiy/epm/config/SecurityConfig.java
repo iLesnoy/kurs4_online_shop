@@ -22,9 +22,9 @@ public class SecurityConfig{
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/**").hasAuthority("read:role")
+                .antMatchers("/**").permitAll()
+//                .antMatchers("/auth/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/**").hasAuthority("read:role")
                 .anyRequest()
                 .authenticated()
                 .and()
